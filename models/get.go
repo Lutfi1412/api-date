@@ -8,6 +8,7 @@ type GetTanggal struct {
 }
 
 type GetRundown struct {
+	ID         int      `json:"id"`
 	Nama       string   `json:"nama"`
 	JamMulai   string   `json:"jam_mulai"`
 	JamSelesai string   `json:"jam_selesai"`
@@ -28,13 +29,42 @@ type RundownGetJob struct {
 	TanggalID int64
 }
 
-type RundownGetResult struct {
-	Type          string
-	Tanggal       string
-	Status        string
-	StatusRundown string
+// type RundownGetResult struct {
+// 	Type          string
+// 	Tanggal       string
+// 	Status        string
+// 	StatusRundown string
 
+// 	TotalPeringatan int
+// 	Rundown         []GetRundown
+// 	Error           error
+// }
+
+type GetError struct {
+	ID          *int64   `json:"id"`
+	Nama        *string  `json:"nama"`
+	JamMulai    *string  `json:"jam_mulai"`
+	JamSelesai  *string  `json:"jam_selesai"`
+	ErrorDetail *string  `json:"error_detail"`
+	LinkGmaps   *string  `json:"link_gmaps"`
+	Rating      *float64 `json:"rating"`
+}
+
+type GetErrorResponse struct {
+	Tanggal         string     `json:"tanggal"`
+	Status          string     `json:"status"`
+	StatusRundown   string     `json:"status_rundown"`
+	TotalPeringatan int        `json:"total_peringatan"`
+	Error           []GetError `json:"error"`
+}
+
+type RundownGetResult struct {
+	Type            string
+	Tanggal         string
+	Status          string
+	StatusRundown   string
 	TotalPeringatan int
 	Rundown         []GetRundown
+	ErrorData       []GetError
 	Error           error
 }

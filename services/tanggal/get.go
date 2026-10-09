@@ -4,6 +4,7 @@ import (
 	"be-date/config"
 	"be-date/models"
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -158,7 +159,19 @@ func GetTanggal() ([]models.GetTanggal, error) {
 		}
 
 		// Format tanggal menjadi YYYY-MM-DD
-		tanggal.Tanggal = tanggalDate.Format("2006-01-02")
+		// Format tanggal menjadi 20 Oktober 2026
+		namaBulan := []string{
+			"Januari", "Februari", "Maret", "April",
+			"Mei", "Juni", "Juli", "Agustus",
+			"September", "Oktober", "November", "Desember",
+		}
+
+		tanggal.Tanggal = fmt.Sprintf(
+			"%d %s %d",
+			tanggalDate.Day(),
+			namaBulan[int(tanggalDate.Month())-1],
+			tanggalDate.Year(),
+		)
 
 		dataTanggal = append(dataTanggal, tanggal)
 	}

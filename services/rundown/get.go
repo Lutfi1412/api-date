@@ -107,6 +107,91 @@ func GetRundown(tanggalID int64) (
 	return response, nil
 }
 
+func GetError(
+	tanggalID int64,
+) (models.GetErrorResponse, error) {
+	jobs := make(chan models.RundownGetJob)
+	results := make(chan models.RundownGetResult)
+
+	var wg sync.WaitGroup
+
+	const workerCount = 3
+
+	wg.Add(workerCount)
+
+	for i := 0; i < workerCount; i++ {
+		go workers.GetRundownWorker(
+			&wg,
+			i+1,
+			jobs,
+			results,
+		)
+	}
+
+	// Ketiga job menggunakan tanggal_id yang sama.
+	go func() {
+		defer close(jobs)
+
+		jobs <- models.RundownGetJob{
+			Type:      "tanggal",
+			TanggalID: tanggalID,
+		}
+
+		jobs <- models.RundownGetJob{
+			Type:      "error",
+			TanggalID: tanggalID,
+		}
+
+		jobs <- models.RundownGetJob{
+			Type:      "error_data",
+			TanggalID: tanggalID,
+		}
+	}()
+
+	// Tutup results setelah semua worker selesai.
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	response := models.GetErrorResponse{
+		Error: []models.GetError{},
+	}
+
+	var firstErr error
+
+	for result := range results {
+		if result.Error != nil {
+			if firstErr == nil {
+				firstErr = result.Error
+			}
+			continue
+		}
+
+		switch result.Type {
+		case "tanggal":
+			response.Tanggal = result.Tanggal
+			response.Status = result.Status
+			response.StatusRundown = result.StatusRundown
+
+		case "error":
+			response.TotalPeringatan = result.TotalPeringatan
+
+		case "error_data":
+			response.Error = result.ErrorData
+		}
+	}
+
+	if firstErr != nil {
+		return response, fmt.Errorf(
+			"gagal mengambil data error: %w",
+			firstErr,
+		)
+	}
+
+	return response, nil
+}
+
 func updateStatusRundown(
 	tanggalID int64,
 	status string,

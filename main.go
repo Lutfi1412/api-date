@@ -46,10 +46,7 @@ func main() {
 		"/create-rundown/:tanggal_id",
 		Rundown.CreateRundown,
 	)
-	r.GET(
-		"/get-rundown/:tanggal_id",
-		Rundown.GetRundown,
-	)
+	r.GET("/get/:data/:tanggal_id", Rundown.GetData)
 
 	r.PUT(
 		"/update-rundown/:id",

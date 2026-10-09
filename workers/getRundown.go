@@ -32,6 +32,9 @@ func GetRundownWorker(
 		case "rundown":
 			result = getRundownData(job)
 
+		case "error_data":
+			result = getErrorData(job)
+
 		default:
 			result.Error = fmt.Errorf(
 				"type job tidak dikenal: %s",
@@ -43,6 +46,81 @@ func GetRundownWorker(
 	}
 }
 
+func getErrorData(
+	job models.RundownGetJob,
+) models.RundownGetResult {
+	ctx := context.Background()
+
+	result := models.RundownGetResult{
+		Type:      "error_data",
+		ErrorData: []models.GetError{},
+	}
+
+	query := `
+		SELECT
+			id,
+			nama,
+			to_char(jam_mulai, 'HH24:MI:SS'),
+			to_char(jam_selesai, 'HH24:MI:SS'),
+			error_detail,
+			link_gmaps,
+			rating
+		FROM public.error
+		WHERE tanggal_id = $1
+		ORDER BY jam_mulai ASC
+	`
+
+	rows, err := config.DB.Query(
+		ctx,
+		query,
+		job.TanggalID,
+	)
+	if err != nil {
+		result.Error = fmt.Errorf(
+			"gagal mengambil data error: %w",
+			err,
+		)
+		return result
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var data models.GetError
+
+		err := rows.Scan(
+			&data.ID,
+			&data.Nama,
+			&data.JamMulai,
+			&data.JamSelesai,
+			&data.ErrorDetail,
+			&data.LinkGmaps,
+			&data.Rating,
+		)
+		if err != nil {
+			result.Error = fmt.Errorf(
+				"gagal membaca data error: %w",
+				err,
+			)
+			return result
+		}
+
+		result.ErrorData = append(
+			result.ErrorData,
+			data,
+		)
+	}
+
+	if err := rows.Err(); err != nil {
+		result.Error = fmt.Errorf(
+			"error saat membaca rows error: %w",
+			err,
+		)
+		return result
+	}
+
+	return result
+}
 func getTanggal(
 	job models.RundownGetJob,
 ) models.RundownGetResult {
@@ -133,6 +211,7 @@ func getRundownData(
 
 	query := `
 		SELECT
+			id,
 			nama,
 			jam_mulai,
 			jam_selesai,
@@ -165,6 +244,7 @@ func getRundownData(
 		var data models.GetRundown
 
 		err := rows.Scan(
+			&data.ID,
 			&data.Nama,
 			&data.JamMulai,
 			&data.JamSelesai,
