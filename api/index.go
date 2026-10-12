@@ -4,6 +4,7 @@ import (
 	"be-date/config"
 	Rundown "be-date/handlers/rundown"
 	Tanggal "be-date/handlers/tanggal"
+	"be-date/models"
 	"log"
 	"net/http"
 	"sync"
@@ -55,6 +56,14 @@ func setupRouter() error {
 	router.PUT("/update-rundown/:id", Rundown.UpdateRundown)
 	router.DELETE("/delete-data/:tabel", Rundown.DeleteData)
 	router.POST("/try-again/:id/:tanggal_id", Rundown.TryAgain)
+
+	router.GET("/get-version", func(c *gin.Context) {
+		c.JSON(http.StatusOK, models.SuccessResponse{
+			Status:  true,
+			Message: "1.0",
+			Data:    nil,
+		})
+	})
 
 	return nil
 }

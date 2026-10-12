@@ -4,7 +4,9 @@ import (
 	"be-date/config"
 	Rundown "be-date/handlers/rundown"
 	Tanggal "be-date/handlers/tanggal"
+	"be-date/models"
 	"fmt"
+	"net/http"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -59,6 +61,14 @@ func main() {
 	)
 
 	r.POST("/try-again/:id/:tanggal_id", Rundown.TryAgain)
+
+	r.GET("/get-version", func(c *gin.Context) {
+		c.JSON(http.StatusOK, models.SuccessResponse{
+			Status:  true,
+			Message: "1.0",
+			Data:    nil,
+		})
+	})
 
 	r.Run(":8080")
 
