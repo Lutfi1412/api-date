@@ -60,8 +60,11 @@ func setupRouter() error {
 	router.GET("/get-version", func(c *gin.Context) {
 		c.JSON(http.StatusOK, models.SuccessResponse{
 			Status:  true,
-			Message: "1.0",
-			Data:    nil,
+			Message: " Data Version Berhasil Diambil",
+			Data: models.GetVersion{
+				Link:    "https://www.chess.com/",
+				Version: "1.0",
+			},
 		})
 	})
 

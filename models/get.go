@@ -68,3 +68,8 @@ type RundownGetResult struct {
 	ErrorData       []GetError
 	Error           error
 }
+
+type GetVersion struct {
+	Link    string `json:"link"`
+	Version string `json:"version"`
+}
