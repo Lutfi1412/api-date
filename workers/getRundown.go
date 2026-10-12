@@ -135,7 +135,8 @@ func getTanggal(
 		SELECT
 			tanggal,
 			status,
-			status_rundown
+			status_rundown,
+			label
 		FROM tanggal
 		WHERE id = $1
 	`
@@ -148,6 +149,7 @@ func getTanggal(
 		&result.Tanggal,
 		&result.Status,
 		&result.StatusRundown,
+		&result.Label,
 	)
 
 	if err != nil {

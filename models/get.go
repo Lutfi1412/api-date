@@ -1,10 +1,11 @@
 package models
 
 type GetTanggal struct {
-	ID            int    `json:"id"`
-	Tanggal       string `json:"tanggal"`
-	Status        string `json:"status"`
-	StatusRundown string `json:"status_rundown"`
+	ID            int     `json:"id"`
+	Tanggal       string  `json:"tanggal"`
+	Status        string  `json:"status"`
+	StatusRundown string  `json:"status_rundown"`
+	Label         *string `json:"label"`
 }
 
 type GetRundown struct {
@@ -19,6 +20,7 @@ type GetRundown struct {
 type GetRundownResponse struct {
 	Tanggal         string       `json:"tanggal"`
 	Status          string       `json:"status"`
+	Label           *string      `json:"label"`
 	StatusRundown   string       `json:"status_rundown"`
 	TotalPeringatan int          `json:"total_peringatan"`
 	Rundown         []GetRundown `json:"rundown"`
@@ -64,6 +66,7 @@ type RundownGetResult struct {
 	Status          string
 	StatusRundown   string
 	TotalPeringatan int
+	Label           *string
 	Rundown         []GetRundown
 	ErrorData       []GetError
 	Error           error

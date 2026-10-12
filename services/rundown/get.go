@@ -74,6 +74,7 @@ func GetRundown(tanggalID int64) (
 			response.Tanggal = result.Tanggal
 			response.Status = result.Status
 			response.StatusRundown = result.StatusRundown
+			response.Label = result.Label
 
 		case "error":
 			response.TotalPeringatan = result.TotalPeringatan

@@ -12,7 +12,7 @@ func GetTanggal() ([]models.GetTanggal, error) {
 	ctx := context.Background()
 
 	query := `
-		SELECT id, tanggal, status, status_rundown
+		SELECT id, tanggal, status, status_rundown, label
 		FROM tanggal
 		ORDER BY tanggal DESC LIMIT 10
 	`
@@ -57,6 +57,7 @@ func GetTanggal() ([]models.GetTanggal, error) {
 			&tanggalDB,
 			&tanggal.Status,
 			&tanggal.StatusRundown,
+			&tanggal.Label,
 		); err != nil {
 			return nil, err
 		}
