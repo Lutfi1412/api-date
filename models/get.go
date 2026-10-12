@@ -73,3 +73,8 @@ type GetVersion struct {
 	Link    string `json:"link"`
 	Version string `json:"version"`
 }
+
+type DokumentasiResponse struct {
+	ID          int64   `json:"id"`
+	Dokumentasi *string `json:"dokumentasi"`
+}

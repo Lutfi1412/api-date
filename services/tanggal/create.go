@@ -7,15 +7,15 @@ import (
 	"os"
 )
 
-func CreateTanggal(tanggal string, status string) (string, error) {
+func CreateTanggal(tanggal string, status string, label string) (string, error) {
 
-	input := `INSERT INTO tanggal (tanggal, status) VALUES ($1, $2)`
+	input := `INSERT INTO tanggal (tanggal, status, label) VALUES ($1, $2, $3)`
 
 	conn := config.DB
 
 	tx, err := conn.Begin(context.Background())
 
-	_, err = conn.Exec(context.Background(), input, tanggal, status)
+	_, err = conn.Exec(context.Background(), input, tanggal, status, label)
 
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to insert data: %v\n", err)

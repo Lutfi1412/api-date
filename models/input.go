@@ -2,6 +2,7 @@ package models
 
 type CreateTanggal struct {
 	Tanggal string `json:"tanggal" binding:"required"`
+	Label   string `json:"label" binding:"required"`
 }
 
 type CreateRundown struct {

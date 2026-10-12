@@ -50,6 +50,8 @@ func setupRouter() error {
 	router.POST("/create-tanggal", Tanggal.CreateTanggal)
 	router.DELETE("/delete-tanggal/:id", Tanggal.DeleteTanggal)
 	router.GET("/get-tanggal", Tanggal.GetDataHandler)
+	router.GET("/dokumentasi/:id", Tanggal.GetDokumentasi)
+	router.PUT("/dokumentasi/:id", Tanggal.UpdateDokumentasi)
 
 	router.POST("/create-rundown/:tanggal_id", Rundown.CreateRundown)
 	router.GET("/get/:data/:tanggal_id", Rundown.GetData)

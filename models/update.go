@@ -7,3 +7,7 @@ type UpdateRundown struct {
 	LinkGmaps  string   `json:"link_gmap"`
 	Rating     *float64 `json:"rating"`
 }
+
+type UpdateDokumentasiRequest struct {
+	Link *string `json:"link"`
+}

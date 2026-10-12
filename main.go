@@ -42,6 +42,9 @@ func main() {
 	r.DELETE("/delete-tanggal/:id", Tanggal.DeleteTanggal)
 	r.GET("/get-tanggal", Tanggal.GetDataHandler)
 
+	r.GET("/dokumentasi/:id", Tanggal.GetDokumentasi)
+	r.PUT("/dokumentasi/:id", Tanggal.UpdateDokumentasi)
+
 	//rundown
 
 	r.POST(

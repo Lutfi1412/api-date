@@ -89,6 +89,7 @@ func CreateTanggal(c *gin.Context) {
 	_, err = services.CreateTanggal(
 		tanggalString,
 		status,
+		input.Label,
 	)
 
 	if err != nil {
